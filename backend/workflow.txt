@@ -1,0 +1,56 @@
+backend/
+├── src/
+│   ├── config/
+│   │   ├── db.js                 # MongoDB connection
+│   │   ├── redis.js               # Redis cache setup (for later)
+│   │   ├── cloudinary.js          # Cloudinary configuration
+│   │   └── socket.js              # Socket.io configuration
+│   │
+│   ├── models/
+│   │   ├── User.js                 # User schema
+│   │   ├── Message.js              # Message schema
+│   │   ├── Conversation.js         # Conversation schema
+│   │   ├── FriendRequest.js        # Friend request schema
+│   │   └── Notification.js         # Notifications schema
+│   │
+│   ├── controllers/
+│   │   ├── authController.js       # Signup, login, logout
+│   │   ├── userController.js       # Profile, search, friends
+│   │   ├── messageController.js    # Send/get messages
+│   │   ├── friendController.js     # Friend requests
+│   │   ├── uploadController.js     # File uploads
+│   │   └── aiController.js         # AI features (spelling, sentiment, etc.)
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── userRoutes.js
+│   │   ├── messageRoutes.js
+│   │   ├── friendRoutes.js
+│   │   ├── uploadRoutes.js
+│   │   └── aiRoutes.js
+│   │
+│   ├── middleware/
+│   │   ├── auth.js                  # JWT verification
+│   │   ├── errorHandler.js           # Global error handling
+│   │   ├── validation.js             # Input validation
+│   │   ├── rateLimiter.js            # Rate limiting
+│   │   └── upload.js                 # Multer config
+│   │
+│   ├── utils/
+│   │   ├── generateToken.js          # JWT helper
+│   │   ├── sendEmail.js              # Email notifications
+│   │   ├── apiFeatures.js            # Advanced querying
+│   │   └── constants.js              # App constants
+│   │
+│   ├── sockets/
+│   │   ├── index.js                   # Main socket setup
+│   │   ├── messageHandler.js           # Message events
+│   │   ├── typingHandler.js            # Typing indicators
+│   │   └── presenceHandler.js          # Online/offline status
+│   │
+│   └── server.js                       # Entry point
+│
+├── .env                                 # Environment variables
+├── .gitignore
+├── package.json
+└── README.md
