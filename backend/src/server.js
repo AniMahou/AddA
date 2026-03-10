@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import 'colors';
+
 // Load environment variables
 dotenv.config();
 
@@ -18,7 +19,7 @@ import configureSocket from './config/socket.js';
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
 
-// Import routes (we'll create these next)
+// Import routes
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
@@ -48,14 +49,6 @@ app.use(cors({
   credentials: true
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
-});
-app.use('/api', limiter);
-
 // Logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -68,35 +61,83 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files (for uploads)
 app.use('/uploads', express.static('uploads'));
 
-// Routes
+// ✅ 1. RATE LIMITING - MUST come BEFORE routes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: {
+    success: false,
+    message: 'Too many requests from this IP, please try again later.'
+  }
+});
+app.use('/api', limiter); // Apply rate limiting to all /api routes
+
+// ✅ 2. ROUTES - Come AFTER rate limiting
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api/upload', uploadRoutes);
 
-// Base route
+// ✅ 3. BASE ROUTE
 app.get('/', (req, res) => {
   res.json({ 
-    message: 'Welcome to VibeChat API',
+    message: 'Welcome to AddA API', // Changed to AddA
     version: '1.0.0',
     status: 'running'
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+// ✅ 4. 404 HANDLER - For routes not found
+app.use((req, res) => {
+  res.status(404).json({ 
+    success: false,
+    message: 'Route not found',
+    path: req.originalUrl
+  });
 });
 
-// Error handling middleware (must be last)
+// ✅ 5. ERROR HANDLER - MUST be last
 app.use(errorHandler);
+
+
+//6. testcase
+// Add this TEMPORARILY after your routes (after line where you define routes)
+console.log('🔍 DEBUG: Checking registered routes...');
+
+// Check auth routes specifically
+if (authRoutes && authRoutes.stack) {
+  console.log(`✅ Auth routes found: ${authRoutes.stack.length} routes`);
+  authRoutes.stack.forEach((layer) => {
+    if (layer.route) {
+      console.log(`  → ${Object.keys(layer.route.methods).join(',')} /api/auth${layer.route.path}`);
+    }
+  });
+} else {
+  console.log('❌ Auth routes not properly loaded!');
+}
+
+// Safe way to check app routes (only after server starts)
+setTimeout(() => {
+  console.log('\n🔍 All registered routes:');
+  if (app._router && app._router.stack) {
+    app._router.stack.forEach((layer) => {
+      if (layer.route) {
+        console.log(`  → ${Object.keys(layer.route.methods).join(',')} ${layer.route.path}`);
+      } else if (layer.name === 'router' && layer.handle.stack) {
+        // This is a router middleware
+        const routerPath = layer.regexp.toString();
+        console.log(`  → Router: ${routerPath}`);
+      }
+    });
+  } else {
+    console.log('  Router not fully initialized yet');
+  }
+}, 1000);
 
 // Socket.io connection handling
 io.on('connection', (socket) => {
   console.log('🔵 New client connected:', socket.id);
-  
-  // We'll add socket event handlers here later
   
   socket.on('disconnect', () => {
     console.log('🔴 Client disconnected:', socket.id);
