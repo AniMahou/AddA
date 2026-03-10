@@ -76,9 +76,11 @@ const userSchema = new mongoose.Schema({
 });
 
 // Virtual for friend count
+// Virtual for friend count - WITH NULL CHECK
 userSchema.virtual('friendCount').get(function() {
-  return this.friends.length;
+    return this.friends ? this.friends.length : 0;
 });
+
 
 // Hash password before saving
 userSchema.pre('save', async function() {

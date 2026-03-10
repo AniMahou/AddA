@@ -37,12 +37,12 @@ const friendRequestSchema = new mongoose.Schema({
 friendRequestSchema.index({ sender: 1, receiver: 1 }, { unique: true });
 
 // Don't allow self friend requests
-friendRequestSchema.pre('save', function(next) {
-  if (this.sender.toString() === this.receiver.toString()) {
-    next(new Error('Cannot send friend request to yourself'));
-  }
-  next();
-});
+// Don't allow self friend requests
+friendRequestSchema.pre('save', async function() {
+    if (this.sender.toString() === this.receiver.toString()) {
+      throw new Error('Cannot send friend request to yourself');
+    }
+  });
 
 const FriendRequest = mongoose.model('FriendRequest', friendRequestSchema);
 
