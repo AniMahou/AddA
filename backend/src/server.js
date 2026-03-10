@@ -25,6 +25,7 @@ import userRoutes from './routes/userRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import friendRoutes from './routes/friendRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import { setupSocket } from './sockets/index.js';
 
 // Initialize express
 const app = express();
@@ -36,6 +37,8 @@ connectCloudinary();
 
 // Initialize Socket.io
 const io = configureSocket(server);
+//setup socket server
+setupSocket(io);
 
 // Make io accessible to routes
 app.set('io', io);

@@ -104,3 +104,4 @@ userSchema.methods.getPublicProfile = function() {
 const User = mongoose.model('User', userSchema);
 
 export default User;
+

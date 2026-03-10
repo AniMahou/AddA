@@ -1,5 +1,6 @@
-// backend/src/config/socket.js
 import { Server } from 'socket.io';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 const configureSocket = (server) => {
   const io = new Server(server, {
@@ -8,13 +9,35 @@ const configureSocket = (server) => {
       methods: ['GET', 'POST'],
       credentials: true
     },
-    // Connection settings
-    pingTimeout: 60000, // 60 seconds
-    pingInterval: 25000, // 25 seconds
+    pingTimeout: 60000,
+    pingInterval: 25000,
+    transports: ['websocket', 'polling']
   });
 
-  console.log('Socket.io Configured'.cyan.underline);
-  
+  // Authentication middleware
+  io.use(async (socket, next) => {
+    try {
+      const token = socket.handshake.auth.token;
+      if (!token) {
+        return next(new Error('Authentication required'));
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id).select('-password');
+      
+      if (!user) {
+        return next(new Error('User not found'));
+      }
+
+      socket.user = user;
+      socket.handshake.auth.userId = user._id.toString();
+      next();
+    } catch (error) {
+      next(new Error('Invalid token'));
+    }
+  });
+
+  console.log('✅ Socket.io Configured'.cyan.underline);
   return io;
 };
 
