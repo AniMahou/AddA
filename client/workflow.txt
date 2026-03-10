@@ -1,0 +1,109 @@
+client/
+├── public/
+│   ├── index.html
+│   ├── favicon.ico
+│   └── manifest.json
+│
+├── src/
+│   ├── assets/
+│   │   ├── images/
+│   │   ├── fonts/
+│   │   └── styles/
+│   │       └── index.css
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Input.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   ├── Spinner.jsx
+│   │   │   ├── Avatar.jsx
+│   │   │   └── Toast.jsx
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── LoginForm.jsx
+│   │   │   ├── SignupForm.jsx
+│   │   │   └── ForgotPassword.jsx
+│   │   │
+│   │   ├── chat/
+│   │   │   ├── ChatContainer.jsx
+│   │   │   ├── ChatHeader.jsx
+│   │   │   ├── ChatSidebar.jsx
+│   │   │   ├── MessageList.jsx
+│   │   │   ├── MessageBubble.jsx
+│   │   │   ├── MessageInput.jsx
+│   │   │   ├── TypingIndicator.jsx
+│   │   │   └── EmojiPicker.jsx
+│   │   │
+│   │   ├── friends/
+│   │   │   ├── FriendList.jsx
+│   │   │   ├── FriendRequest.jsx
+│   │   │   ├── FriendSuggestions.jsx
+│   │   │   └── SearchUsers.jsx
+│   │   │
+│   │   ├── profile/
+│   │   │   ├── ProfileCard.jsx
+│   │   │   ├── EditProfile.jsx
+│   │   │   └── ProfilePicture.jsx
+│   │   │
+│   │   └── ai/
+│   │       ├── SmartReply.jsx
+│   │       ├── SentimentIndicator.jsx
+│   │       └── SpellCheck.jsx
+│   │
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── Signup.jsx
+│   │   ├── Home.jsx
+│   │   ├── Chat.jsx
+│   │   ├── Profile.jsx
+│   │   ├── Friends.jsx
+│   │   └── Settings.jsx
+│   │
+│   ├── hooks/
+│   │   ├── useAuth.js
+│   │   ├── useSocket.js
+│   │   ├── useChat.js
+│   │   ├── useFriends.js
+│   │   └── useDebounce.js
+│   │
+│   ├── context/
+│   │   ├── AuthContext.jsx
+│   │   ├── SocketContext.jsx
+│   │   └── ThemeContext.jsx
+│   │
+│   ├── store/
+│   │   ├── authStore.js      # Zustand
+│   │   ├── chatStore.js
+│   │   └── friendStore.js
+│   │
+│   ├── services/
+│   │   ├── api.js            # Axios configuration
+│   │   ├── authService.js
+│   │   ├── userService.js
+│   │   ├── messageService.js
+│   │   ├── friendService.js
+│   │   ├── uploadService.js
+│   │   └── aiService.js
+│   │
+│   ├── socket/
+│   │   └── index.js          # Socket.io client setup
+│   │
+│   ├── utils/
+│   │   ├── constants.js
+│   │   ├── helpers.js
+│   │   └── validators.js
+│   │
+│   ├── App.jsx
+│   ├── App.css
+│   ├── main.jsx
+│   └── index.css
+│
+├── .env
+├── .gitignore
+├── index.html
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+├── postcss.config.js
+└── README.md
