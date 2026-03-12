@@ -15,34 +15,48 @@
 
 @layer base {
   body {
-    background-color: var(--color-gray-50);
-    color: var(--color-gray-900);
+    @apply bg-gray-50 text-gray-900;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-@layer components {
-  .message-bubble {
-    max-width: 70%;
-    border-radius: 1rem;
-    padding: 0.5rem 1rem;
-    word-wrap: break-word;
+/* Custom animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
   }
-  
-  .message-bubble-sent {
-    composes: message-bubble;
-    background-color: var(--color-primary-500);
-    color: white;
-    border-bottom-right-radius: 0;
-  }
-  
-  .message-bubble-received {
-    composes: message-bubble;
-    background-color: var(--color-gray-200);
-    color: var(--color-gray-900);
-    border-bottom-left-radius: 0;
+  50% {
+    opacity: 0.5;
   }
 }
 
-@utility animate-typing {
+.animate-typing {
   animation: pulse 1.5s infinite;
+}
+
+/* Message bubble styles */
+.message-bubble {
+  max-width: 70%;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  word-wrap: break-word;
+}
+
+.message-bubble-sent {
+  composes: message-bubble;
+  background-color: var(--color-primary-500);
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.message-bubble-received {
+  composes: message-bubble;
+  background-color: #e5e7eb;
+  color: #111827;
+  border-bottom-left-radius: 0;
 }
